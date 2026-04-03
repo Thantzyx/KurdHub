@@ -15,8 +15,14 @@ local VERSIONS = {
 		desc = "Optimised for PC\nBest performance",
 		icon = "◇",
 		onSelect = function()
-			print("[ERVO HUB] Selected: Duels V1")
-			-- put your V1 logic here
+			print("[ERVO HUB] Selected: Duels V1 - Loading ThanHub...")
+			-- Load the ThanHub script
+			local success, err = pcall(function()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/Thantzyx/thanhub/refs/heads/main/thanv1%20Hub"))()
+			end)
+			if not success then
+				warn("[ERVO HUB] Failed to load ThanHub:", err)
+			end
 		end
 	},
 	{
