@@ -411,8 +411,11 @@ end)
 
 -- Run loading steps
 task.spawn(function()
+	-- Small initial delay to make loading feel intentional
+	task.wait(0.3)
+	
 	for _, step in ipairs(steps) do
-		task.wait(0.55)
+		task.wait(0.85) -- Increased from 0.55 to make loading longer but not too long
 		loadStatus.Text = step.msg
 		loadPct.Text = step.pct .. "%"
 		TweenService:Create(barFill, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
