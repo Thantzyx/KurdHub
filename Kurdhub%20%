@@ -29,16 +29,15 @@ local VERSIONS = {
 }
 
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "ErvoHub"
+screenGui.Name = "ThanHub"
 screenGui.ResetOnSpawn = false
 screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 local ok = pcall(function() screenGui.Parent = PlayerGui end)
 if not ok then screenGui.Parent = game:GetService("CoreGui") end
 
--- Dim overlay
 local overlay = Instance.new("Frame")
-overlay.Size = UDim2.new(1, 0, 1, 0)
-overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+overlay.Size = UDim2.new(1,0,1,0)
+overlay.BackgroundColor3 = Color3.fromRGB(0,0,0)
 overlay.BackgroundTransparency = 0.35
 overlay.BorderSizePixel = 0
 overlay.ZIndex = 1
@@ -47,31 +46,29 @@ overlay.Parent = screenGui
 local panelW = isMobile and 500 or 660
 local panelH = isMobile and 300 or 360
 
--- ── STARFIELD ──────────────────────────────────────────────
 local function spawnDots(parent, count)
 	for i = 1, count do
 		local dot = Instance.new("Frame")
-		dot.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
+		dot.Size = UDim2.new(0, math.random(2,4), 0, math.random(2,4))
 		dot.Position = UDim2.new(math.random(), 0, math.random(), 0)
-		dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		dot.BackgroundTransparency = math.random(55, 80) / 100
+		dot.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		dot.BackgroundTransparency = math.random(55,80)/100
 		dot.BorderSizePixel = 0
 		dot.ZIndex = 2
 		dot.Parent = parent
 		local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(1,0); c.Parent = dot
-		task.delay(math.random() * 2, function()
+		task.delay(math.random()*2, function()
 			TweenService:Create(dot, TweenInfo.new(math.random(15,35)/10, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
 				{BackgroundTransparency = math.random(10,35)/100}):Play()
 		end)
 	end
 end
 
--- ── HELPER: rounded panel ──────────────────────────────────
 local function makePanel(w, h)
 	local f = Instance.new("Frame")
-	f.Size = UDim2.new(0, w, 0, h)
-	f.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
-	f.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+	f.Size = UDim2.new(0,w,0,h)
+	f.Position = UDim2.new(0.5,-w/2,0.5,-h/2)
+	f.BackgroundColor3 = Color3.fromRGB(14,14,18)
 	f.BackgroundTransparency = 0.05
 	f.BorderSizePixel = 0
 	f.ZIndex = 3
@@ -81,51 +78,34 @@ local function makePanel(w, h)
 	return f
 end
 
--- ══════════════════════════════════════════════════════════
---  LOADING PANEL
--- ══════════════════════════════════════════════════════════
+-- LOAD PANEL
 local loadPanel = makePanel(panelW, panelH)
 spawnDots(loadPanel, 35)
 
--- Animated ring (outer)
 local ringOuter = Instance.new("Frame")
-ringOuter.Size = UDim2.new(0, 82, 0, 82)
-ringOuter.Position = UDim2.new(0.5, -41, 0, isMobile and 30 or 42)
+ringOuter.Size = UDim2.new(0,82,0,82)
+ringOuter.Position = UDim2.new(0.5,-41,0, isMobile and 30 or 42)
 ringOuter.BackgroundTransparency = 1
 ringOuter.ZIndex = 5
 ringOuter.Parent = loadPanel
 local roCo = Instance.new("UICorner"); roCo.CornerRadius = UDim.new(1,0); roCo.Parent = ringOuter
 local roSt = Instance.new("UIStroke"); roSt.Color = Color3.fromRGB(80,80,92); roSt.Thickness = 2.5; roSt.Transparency = 0.3; roSt.Parent = ringOuter
 
--- Animated ring (inner spinning arc — faked with a bright dot)
 local spinDot = Instance.new("Frame")
-spinDot.Size = UDim2.new(0, 10, 0, 10)
-spinDot.AnchorPoint = Vector2.new(0.5, 0.5)
-spinDot.Position = UDim2.new(0.5, 0, 0, -5)
-spinDot.BackgroundColor3 = Color3.fromRGB(220, 220, 230)
+spinDot.Size = UDim2.new(0,10,0,10)
+spinDot.AnchorPoint = Vector2.new(0.5,0.5)
+spinDot.Position = UDim2.new(0.5,0,0,-5)
+spinDot.BackgroundColor3 = Color3.fromRGB(220,220,230)
 spinDot.BorderSizePixel = 0
 spinDot.ZIndex = 7
 spinDot.Parent = ringOuter
 local sdCo = Instance.new("UICorner"); sdCo.CornerRadius = UDim.new(1,0); sdCo.Parent = spinDot
 
--- Glow dot trail
-local spinDot2 = Instance.new("Frame")
-spinDot2.Size = UDim2.new(0, 6, 0, 6)
-spinDot2.AnchorPoint = Vector2.new(0.5, 0.5)
-spinDot2.Position = UDim2.new(0.5, 0, 0, -5)
-spinDot2.BackgroundColor3 = Color3.fromRGB(160, 160, 180)
-spinDot2.BackgroundTransparency = 0.4
-spinDot2.BorderSizePixel = 0
-spinDot2.ZIndex = 6
-spinDot2.Parent = ringOuter
-local sd2Co = Instance.new("UICorner"); sd2Co.CornerRadius = UDim.new(1,0); sd2Co.Parent = spinDot2
-
--- Inner icon label
 local innerIcon = Instance.new("TextLabel")
-innerIcon.Size = UDim2.new(1, 0, 1, 0)
+innerIcon.Size = UDim2.new(1,0,1,0)
 innerIcon.BackgroundTransparency = 1
-innerIcon.Text = "E"
-innerIcon.TextColor3 = Color3.fromRGB(200, 200, 215)
+innerIcon.Text = "T"
+innerIcon.TextColor3 = Color3.fromRGB(200,200,215)
 innerIcon.TextSize = isMobile and 22 or 26
 innerIcon.Font = Enum.Font.GothamBold
 innerIcon.TextXAlignment = Enum.TextXAlignment.Center
@@ -133,108 +113,98 @@ innerIcon.TextYAlignment = Enum.TextYAlignment.Center
 innerIcon.ZIndex = 6
 innerIcon.Parent = ringOuter
 
--- Title
 local loadTitle = Instance.new("TextLabel")
-loadTitle.Size = UDim2.new(1, 0, 0, 44)
-loadTitle.Position = UDim2.new(0, 0, 0, isMobile and 122 or 138)
+loadTitle.Size = UDim2.new(1,0,0,44)
+loadTitle.Position = UDim2.new(0,0,0, isMobile and 122 or 138)
 loadTitle.BackgroundTransparency = 1
-loadTitle.Text = "ERVO HUB"
-loadTitle.TextColor3 = Color3.fromRGB(240, 240, 245)
+loadTitle.Text = "THAN HUB"
+loadTitle.TextColor3 = Color3.fromRGB(240,240,245)
 loadTitle.TextSize = isMobile and 26 or 34
 loadTitle.Font = Enum.Font.GothamBold
 loadTitle.TextXAlignment = Enum.TextXAlignment.Center
 loadTitle.ZIndex = 5
 loadTitle.Parent = loadPanel
 
--- Thin accent line under title
 local titleLine = Instance.new("Frame")
-titleLine.Size = UDim2.new(0, 0, 0, 1)
-titleLine.Position = UDim2.new(0.5, 0, 0, isMobile and 168 or 185)
-titleLine.BackgroundColor3 = Color3.fromRGB(180, 180, 200)
+titleLine.Size = UDim2.new(0,0,0,1)
+titleLine.Position = UDim2.new(0.5,0,0, isMobile and 168 or 185)
+titleLine.BackgroundColor3 = Color3.fromRGB(180,180,200)
 titleLine.BackgroundTransparency = 0.5
 titleLine.BorderSizePixel = 0
 titleLine.ZIndex = 5
 titleLine.Parent = loadPanel
 
--- Status
 local loadStatus = Instance.new("TextLabel")
-loadStatus.Size = UDim2.new(0.8, 0, 0, 20)
-loadStatus.Position = UDim2.new(0.1, 0, 0, isMobile and 178 or 198)
+loadStatus.Size = UDim2.new(0.8,0,0,20)
+loadStatus.Position = UDim2.new(0.1,0,0, isMobile and 178 or 198)
 loadStatus.BackgroundTransparency = 1
 loadStatus.Text = "Initializing..."
-loadStatus.TextColor3 = Color3.fromRGB(140, 140, 155)
+loadStatus.TextColor3 = Color3.fromRGB(140,140,155)
 loadStatus.TextSize = isMobile and 12 or 14
 loadStatus.Font = Enum.Font.Gotham
 loadStatus.TextXAlignment = Enum.TextXAlignment.Center
 loadStatus.ZIndex = 5
 loadStatus.Parent = loadPanel
 
--- Percent
 local loadPct = Instance.new("TextLabel")
-loadPct.Size = UDim2.new(0.8, 0, 0, 18)
-loadPct.Position = UDim2.new(0.1, 0, 0, isMobile and 200 or 220)
+loadPct.Size = UDim2.new(0.8,0,0,18)
+loadPct.Position = UDim2.new(0.1,0,0, isMobile and 200 or 220)
 loadPct.BackgroundTransparency = 1
 loadPct.Text = "0%"
-loadPct.TextColor3 = Color3.fromRGB(190, 190, 205)
+loadPct.TextColor3 = Color3.fromRGB(190,190,205)
 loadPct.TextSize = isMobile and 11 or 12
 loadPct.Font = Enum.Font.GothamBold
 loadPct.TextXAlignment = Enum.TextXAlignment.Center
 loadPct.ZIndex = 5
 loadPct.Parent = loadPanel
 
--- Bar track
 local barBg = Instance.new("Frame")
-barBg.Size = UDim2.new(0.76, 0, 0, 5)
-barBg.Position = UDim2.new(0.12, 0, 0, isMobile and 224 or 248)
-barBg.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
+barBg.Size = UDim2.new(0.76,0,0,5)
+barBg.Position = UDim2.new(0.12,0,0, isMobile and 224 or 248)
+barBg.BackgroundColor3 = Color3.fromRGB(38,38,45)
 barBg.BorderSizePixel = 0
 barBg.ZIndex = 5
 barBg.Parent = loadPanel
 local bbCo = Instance.new("UICorner"); bbCo.CornerRadius = UDim.new(1,0); bbCo.Parent = barBg
 
--- Bar fill
 local barFill = Instance.new("Frame")
-barFill.Size = UDim2.new(0, 0, 1, 0)
-barFill.BackgroundColor3 = Color3.fromRGB(210, 210, 225)
+barFill.Size = UDim2.new(0,0,1,0)
+barFill.BackgroundColor3 = Color3.fromRGB(210,210,225)
 barFill.BorderSizePixel = 0
 barFill.ZIndex = 6
 barFill.Parent = barBg
 local bfCo = Instance.new("UICorner"); bfCo.CornerRadius = UDim.new(1,0); bfCo.Parent = barFill
 
--- Bar shimmer
 local barShimmer = Instance.new("Frame")
-barShimmer.Size = UDim2.new(0, 40, 1, 0)
-barShimmer.Position = UDim2.new(-0.2, 0, 0, 0)
-barShimmer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+barShimmer.Size = UDim2.new(0,40,1,0)
+barShimmer.Position = UDim2.new(-0.2,0,0,0)
+barShimmer.BackgroundColor3 = Color3.fromRGB(255,255,255)
 barShimmer.BackgroundTransparency = 0.7
 barShimmer.BorderSizePixel = 0
 barShimmer.ZIndex = 7
-barShimmer.ClipsDescendants = false
 barShimmer.Parent = barFill
 local bsCo = Instance.new("UICorner"); bsCo.CornerRadius = UDim.new(1,0); bsCo.Parent = barShimmer
 
 local function loopShimmer()
-	barShimmer.Position = UDim2.new(-0.3, 0, 0, 0)
+	barShimmer.Position = UDim2.new(-0.3,0,0,0)
 	local t = TweenService:Create(barShimmer, TweenInfo.new(0.9, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
-		{Position = UDim2.new(1.1, 0, 0, 0)})
+		{Position = UDim2.new(1.1,0,0,0)})
 	t:Play()
 	t.Completed:Connect(function() task.delay(0.5, loopShimmer) end)
 end
 task.delay(0.3, loopShimmer)
 
--- ══════════════════════════════════════════════════════════
---  MAIN PANEL (version selector)
--- ══════════════════════════════════════════════════════════
+-- MAIN PANEL
 local mainPanel = makePanel(panelW, panelH)
 mainPanel.Visible = false
 spawnDots(mainPanel, 35)
 
 local mTitle = Instance.new("TextLabel")
-mTitle.Size = UDim2.new(1, 0, 0, 48)
-mTitle.Position = UDim2.new(0, 0, 0, isMobile and 18 or 26)
+mTitle.Size = UDim2.new(1,0,0,48)
+mTitle.Position = UDim2.new(0,0,0, isMobile and 18 or 26)
 mTitle.BackgroundTransparency = 1
-mTitle.Text = "ERVO HUB"
-mTitle.TextColor3 = Color3.fromRGB(240, 240, 245)
+mTitle.Text = "THAN HUB"
+mTitle.TextColor3 = Color3.fromRGB(240,240,245)
 mTitle.TextSize = isMobile and 26 or 34
 mTitle.Font = Enum.Font.GothamBold
 mTitle.TextXAlignment = Enum.TextXAlignment.Center
@@ -242,11 +212,11 @@ mTitle.ZIndex = 5
 mTitle.Parent = mainPanel
 
 local mSub = Instance.new("TextLabel")
-mSub.Size = UDim2.new(1, 0, 0, 20)
-mSub.Position = UDim2.new(0, 0, 0, isMobile and 58 or 70)
+mSub.Size = UDim2.new(1,0,0,20)
+mSub.Position = UDim2.new(0,0,0, isMobile and 58 or 70)
 mSub.BackgroundTransparency = 1
 mSub.Text = "choose your version"
-mSub.TextColor3 = Color3.fromRGB(100, 100, 115)
+mSub.TextColor3 = Color3.fromRGB(100,100,115)
 mSub.TextSize = isMobile and 12 or 14
 mSub.Font = Enum.Font.Gotham
 mSub.TextXAlignment = Enum.TextXAlignment.Center
@@ -254,26 +224,24 @@ mSub.ZIndex = 5
 mSub.Parent = mainPanel
 
 local mDiv = Instance.new("Frame")
-mDiv.Size = UDim2.new(0.82, 0, 0, 1)
-mDiv.Position = UDim2.new(0.09, 0, 0, isMobile and 84 or 98)
-mDiv.BackgroundColor3 = Color3.fromRGB(55, 55, 65)
+mDiv.Size = UDim2.new(0.82,0,0,1)
+mDiv.Position = UDim2.new(0.09,0,0, isMobile and 84 or 98)
+mDiv.BackgroundColor3 = Color3.fromRGB(55,55,65)
 mDiv.BackgroundTransparency = 0.3
 mDiv.BorderSizePixel = 0
 mDiv.ZIndex = 5
 mDiv.Parent = mainPanel
 
--- Cards
 local cardY = isMobile and 98 or 114
-local cardH = isMobile and 172 or 210
-local cardW = math.floor((panelW - 56) / 2)
+local cardH2 = isMobile and 172 or 210
+local cardW = math.floor((panelW-56)/2)
 
 for i, v in ipairs(VERSIONS) do
-	local cardX = 18 + (i-1) * (cardW + 16)
-
+	local cardX = 18+(i-1)*(cardW+16)
 	local card = Instance.new("TextButton")
-	card.Size = UDim2.new(0, cardW, 0, cardH)
-	card.Position = UDim2.new(0, cardX, 0, cardY)
-	card.BackgroundColor3 = Color3.fromRGB(24, 24, 30)
+	card.Size = UDim2.new(0,cardW,0,cardH2)
+	card.Position = UDim2.new(0,cardX,0,cardY)
+	card.BackgroundColor3 = Color3.fromRGB(24,24,30)
 	card.BackgroundTransparency = 0.1
 	card.BorderSizePixel = 0
 	card.Text = ""
@@ -282,24 +250,22 @@ for i, v in ipairs(VERSIONS) do
 	local cCo = Instance.new("UICorner"); cCo.CornerRadius = UDim.new(0,14); cCo.Parent = card
 	local cSt = Instance.new("UIStroke"); cSt.Color = Color3.fromRGB(65,65,75); cSt.Thickness = 1; cSt.Transparency = 0.45; cSt.Parent = card
 
-	-- Icon
 	local ico = Instance.new("TextLabel")
-	ico.Size = UDim2.new(0, 48, 0, 48)
-	ico.Position = UDim2.new(0.5, -24, 0, isMobile and 16 or 20)
+	ico.Size = UDim2.new(0,48,0,48)
+	ico.Position = UDim2.new(0.5,-24,0, isMobile and 16 or 20)
 	ico.BackgroundTransparency = 1
 	ico.Text = v.icon
-	ico.TextColor3 = Color3.fromRGB(205, 205, 218)
+	ico.TextColor3 = Color3.fromRGB(205,205,218)
 	ico.TextSize = isMobile and 26 or 32
 	ico.Font = Enum.Font.GothamBold
 	ico.TextXAlignment = Enum.TextXAlignment.Center
 	ico.ZIndex = 7
 	ico.Parent = card
 
-	-- Tag pill
 	local pill = Instance.new("Frame")
-	pill.Size = UDim2.new(0, 48, 0, 24)
-	pill.Position = UDim2.new(0.5, -24, 0, isMobile and 70 or 82)
-	pill.BackgroundColor3 = Color3.fromRGB(34, 34, 42)
+	pill.Size = UDim2.new(0,48,0,24)
+	pill.Position = UDim2.new(0.5,-24,0, isMobile and 70 or 82)
+	pill.BackgroundColor3 = Color3.fromRGB(34,34,42)
 	pill.BorderSizePixel = 0
 	pill.ZIndex = 7
 	pill.Parent = card
@@ -316,7 +282,6 @@ for i, v in ipairs(VERSIONS) do
 	pLbl.ZIndex = 8
 	pLbl.Parent = pill
 
-	-- Name
 	local nLbl = Instance.new("TextLabel")
 	nLbl.Size = UDim2.new(1,-8,0,24)
 	nLbl.Position = UDim2.new(0,4,0, isMobile and 102 or 118)
@@ -329,7 +294,6 @@ for i, v in ipairs(VERSIONS) do
 	nLbl.ZIndex = 7
 	nLbl.Parent = card
 
-	-- Desc
 	local dLbl = Instance.new("TextLabel")
 	dLbl.Size = UDim2.new(1,-8,0,34)
 	dLbl.Position = UDim2.new(0,4,0, isMobile and 128 or 146)
@@ -368,7 +332,7 @@ local fHint = Instance.new("TextLabel")
 fHint.Size = UDim2.new(1,0,0,16)
 fHint.Position = UDim2.new(0,0,1, isMobile and -20 or -24)
 fHint.BackgroundTransparency = 1
-fHint.Text = "tap a version to load ervo hub"
+fHint.Text = "tap a version to load than hub"
 fHint.TextColor3 = Color3.fromRGB(60,60,72)
 fHint.TextSize = isMobile and 10 or 11
 fHint.Font = Enum.Font.Gotham
@@ -376,60 +340,47 @@ fHint.TextXAlignment = Enum.TextXAlignment.Center
 fHint.ZIndex = 5
 fHint.Parent = mainPanel
 
--- ══════════════════════════════════════════════════════════
---  SPIN ANIMATION
--- ══════════════════════════════════════════════════════════
+-- SPIN
 local angle = 0
 local spinConn = RunService.Heartbeat:Connect(function(dt)
 	angle = angle + dt * 200
 	ringOuter.Rotation = angle
 end)
 
--- Animate title line open
 task.delay(0.3, function()
 	TweenService:Create(titleLine, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{Size = UDim2.new(0.35, 0, 0, 1), Position = UDim2.new(0.325, 0, 0, isMobile and 168 or 185)}):Play()
+		{Size = UDim2.new(0.35,0,0,1), Position = UDim2.new(0.325,0,0, isMobile and 168 or 185)}):Play()
 end)
 
--- ══════════════════════════════════════════════════════════
---  LOADING STEPS
--- ══════════════════════════════════════════════════════════
 local steps = {
-	{pct = 12,  msg = "Initializing environment..."},
-	{pct = 28,  msg = "Connecting to server..."},
-	{pct = 46,  msg = "Loading assets..."},
-	{pct = 63,  msg = "Building GUI..."},
-	{pct = 78,  msg = "Applying configurations..."},
-	{pct = 91,  msg = "Almost ready..."},
-	{pct = 100, msg = "Complete!"},
+	{pct=12,  msg="Initializing environment..."},
+	{pct=28,  msg="Connecting to server..."},
+	{pct=46,  msg="Loading assets..."},
+	{pct=63,  msg="Building GUI..."},
+	{pct=78,  msg="Applying configurations..."},
+	{pct=91,  msg="Almost ready..."},
+	{pct=100, msg="Complete!"},
 }
 
 task.spawn(function()
 	for _, step in ipairs(steps) do
-		task.wait(math.random(45, 70) / 100)
-		TweenService:Create(loadStatus, TweenInfo.new(0.2), {TextTransparency = 1}):Play()
+		task.wait(math.random(45,70)/100)
+		TweenService:Create(loadStatus, TweenInfo.new(0.2), {TextTransparency=1}):Play()
 		task.wait(0.2)
 		loadStatus.Text = step.msg
-		TweenService:Create(loadStatus, TweenInfo.new(0.2), {TextTransparency = 0}):Play()
-		loadPct.Text = step.pct .. "%"
+		TweenService:Create(loadStatus, TweenInfo.new(0.2), {TextTransparency=0}):Play()
+		loadPct.Text = step.pct.."%"
 		TweenService:Create(barFill, TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{Size = UDim2.new(step.pct / 100, 0, 1, 0)}):Play()
+			{Size = UDim2.new(step.pct/100,0,1,0)}):Play()
 	end
-
 	task.wait(0.5)
 	spinConn:Disconnect()
-
-	-- Flash complete
 	TweenService:Create(barFill, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255,255,255)}):Play()
 	task.wait(0.25)
-
-	-- Collapse loader
 	TweenService:Create(loadPanel, TweenInfo.new(0.38, Enum.EasingStyle.Back, Enum.EasingDirection.In),
 		{Size = UDim2.new(0,0,0,0), Position = UDim2.new(0.5,0,0.5,0)}):Play()
 	task.wait(0.42)
 	loadPanel:Destroy()
-
-	-- Pop in main panel
 	mainPanel.Size = UDim2.new(0,0,0,0)
 	mainPanel.Position = UDim2.new(0.5,0,0.5,0)
 	mainPanel.Visible = true
