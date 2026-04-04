@@ -23,7 +23,7 @@ local VERSIONS = {
 		desc = "PC & Mobile ready\nOverall best",
 		icon = "○",
 		onSelect = function()
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/NoLag-ldss/Trede-Scam/refs/heads/main/Loader/LoaderV1.lua", true))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Thantzyx/thanhub/refs/heads/main/thanv1%20Hub"))()
 		end
 	},
 }
